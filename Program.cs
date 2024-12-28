@@ -13,6 +13,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<AppointmentRequestValidation>();
 builder.Services.AddFluentValidationAutoValidation(); // the same old MVC pipeline behavior
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // add the context using SQL Server and setting the connection string
 builder.Services.AddDbContext<AppointmentsDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -152,3 +152,8 @@ G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\refint\AppointmentsAPI.dll
 G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\AppointmentsAPI.pdb
 G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\AppointmentsAPI.genruntimeconfig.cache
 G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\ref\AppointmentsAPI.dll
+G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\AutoMapper.dll
+G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\FluentValidation.dll
+G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\FluentValidation.AspNetCore.dll
+G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\FluentValidation.DependencyInjectionExtensions.dll

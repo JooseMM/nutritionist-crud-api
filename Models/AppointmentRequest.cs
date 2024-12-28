@@ -4,20 +4,12 @@ namespace AppointmentsAPI.Models;
 
 public class AppointmentRequest
 {
-    [Required]
-    public string? ClientName { get; set; }
-    [Required]
-    public int ClientAge { get; set; }
-    [Required]
-    public string? ClientRUT { get; set; }
-    [Required]
-    public string? ClientEmail { get; set; }
-    [Required]
-    public string? ClientPhone { get; set; }
-    [Required]
-    public string? Goals { get; set; }
-    [Required]
-    public string? PrevDiagnostic { get; set; }
-    [Required]
-    public DateTime AppointmentDateTime { get; set; }
+    public required string ClientName { get; set; }
+    public required int ClientAge { get; set; }
+    public required string? ClientRUT { get; set; }
+    public required string? ClientEmail { get; set; }
+    public required string? ClientPhone { get; set; }
+    public required string? Goals { get; set; }
+    public required string? PrevDiagnostic { get; set; }
+    public required DateTime AppointmentDateTime { get; set; }
 }

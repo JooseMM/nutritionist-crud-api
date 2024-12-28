@@ -8,6 +8,6 @@ public interface IAppointmentService
     Task<Appointment?> GetOneAsync(Guid Id);
     Task<Appointment?> GetOneByTrackinIDAsync(Guid TrackingID);
     Task<Appointment> UpdateOneAsync(Appointment newAppointment);
-    Task<AppointmentResponse?> CreateOneAsync(AppointmentRequest newAppointment);
+    Task<AppointmentResponse?> CreateOneAsync(Appointment newAppointment);
     Task<bool> DeleteOneAsync(Guid ID);
 }
