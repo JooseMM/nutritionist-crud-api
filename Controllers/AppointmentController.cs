@@ -1,3 +1,4 @@
+using System.Net;
 using AppointmentsAPI.Core;
 using AppointmentsAPI.Interfaces;
 using AppointmentsAPI.Models.ResponseDtos;
@@ -27,12 +28,16 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<AppointmentResponse>>> GetAll()
     {
         return Ok(await _appointmentService.GetAllAsync());
     }
 
     [HttpPost]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.GatewayTimeout)]
     public async Task<ActionResult<ResponseResult<Guid>>> Create([FromBody] AppointmentRequest appointmentRequest)
     {
         // Validating data in Dto with Fluent Validation
@@ -40,24 +45,33 @@ public class AppointmentController : ControllerBase
 	// Check validation and return if invalid
         if(!validation.IsValid)
 	{
-	    BadRequest(validation.Errors); 
+	    BadRequest(ResponseResult<Guid>
+			.Failure(validation.Errors.ToString()!, (int)HttpStatusCode.BadRequest)); 
 	}
 	// call the create service
 	var response = await _appointmentService.CreateOneAsync(appointmentRequest);
 	// handle response
 	return response.IsSuccess 
-		? Ok(response.Value)
-		: BadRequest();
+	    //? Ok(response.Value)
+	    ? CreatedAtAction(nameof(GetOneByTrackingId), new { id = response.Data }, response)
+	    : BadRequest();
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ResponseResult<bool>>> GetOneByTrackingId(Guid id)
+    {
+	throw new Exception();
+    }
     [HttpDelete("{id}")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<ResponseResult<bool>>> DeleteOne(Guid id)
     {
 	// call the delete service and pass the target id
 	var response = await _appointmentService.DeleteOneAsync(id);
 	// handle result response
 	return response.IsSuccess 
-		? NoContent()
-		: BadRequest();
+	    ? NoContent()
+	    : BadRequest();
     }
 }

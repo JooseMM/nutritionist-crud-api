@@ -3,7 +3,7 @@ namespace AppointmentsAPI.Core;
 public class ResponseResult<T>
 {
     public bool IsSuccess {get;set;}
-    public T? Value {get;set;}
+    public T? Data {get;set;}
     public string? Error {get;set;}
     public DateTime DateTime {get;set;}
     public int StatusCode {get;set;}
@@ -11,7 +11,7 @@ public class ResponseResult<T>
     public static ResponseResult<T> Success(T value, int statusCode) => new ResponseResult<T>
     {
         IsSuccess = true,
-        Value = value,
+        Data = value,
 	DateTime = DateTime.UtcNow,
 	StatusCode = statusCode,
     };
