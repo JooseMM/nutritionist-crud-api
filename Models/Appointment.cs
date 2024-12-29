@@ -1,5 +1,3 @@
-using System.IO.Compression;
-
 namespace AppointmentsAPI.Models;
 
 public class Appointment

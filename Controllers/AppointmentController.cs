@@ -1,8 +1,9 @@
+using AppointmentsAPI.Core;
 using AppointmentsAPI.Interfaces;
-using AppointmentsAPI.Models;
+using AppointmentsAPI.Models.ResponseDtos;
+using AppointmentsAPI.Models.ResquestDtos;
 using AutoMapper;
 using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentsAPI.Controllers;
@@ -26,36 +27,37 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Appointment>>> GetAll()
+    public async Task<ActionResult<List<AppointmentResponse>>> GetAll()
     {
-        var queryResult = await _appointmentService.GetAllAsync();
-        if(queryResult is null)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError,"Error ocurrido en la comunicacion con la base de datos");
-        }
-        return Ok(queryResult);
+        return Ok(await _appointmentService.GetAllAsync());
     }
 
     [HttpPost]
-    public async Task<ActionResult<AppointmentResponse>> Create([FromBody] AppointmentRequest appointmentRequest)
+    public async Task<ActionResult<ResponseResult<Guid>>> Create([FromBody] AppointmentRequest appointmentRequest)
     {
         // Validating data in Dto with Fluent Validation
         var validation = await _validator.ValidateAsync(appointmentRequest);
-
+	// Check validation and return if invalid
         if(!validation.IsValid)
-        {
-            return BadRequest(validation.Errors);
-        }
+	{
+	    BadRequest(validation.Errors); 
+	}
+	// call the create service
+	var response = await _appointmentService.CreateOneAsync(appointmentRequest);
+	// handle response
+	return response.IsSuccess 
+		? Ok(response.Value)
+		: BadRequest();
+    }
 
-        // Map the Dto to an Appointment class using AutoMapper
-        var newAppointment = _mapper.Map<Appointment>(appointmentRequest);
-
-        var result = await _appointmentService.CreateOneAsync(newAppointment);
-
-        if(result is null)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error ocurrido en la comunicacion con la base de datos");
-        }
-        return Ok(result);
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ResponseResult<bool>>> DeleteOne(Guid id)
+    {
+	// call the delete service and pass the target id
+	var response = await _appointmentService.DeleteOneAsync(id);
+	// handle result response
+	return response.IsSuccess 
+		? NoContent()
+		: BadRequest();
     }
 }

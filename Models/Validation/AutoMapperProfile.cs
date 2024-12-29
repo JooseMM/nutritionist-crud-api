@@ -1,10 +1,12 @@
+using AppointmentsAPI.Models.ResponseDtos;
+using AppointmentsAPI.Models.ResquestDtos;
 using AutoMapper;
 
 namespace AppointmentsAPI.Models;
 
 public class AutoMapperProfile : Profile
 {
-    protected AutoMapperProfile()
+    public AutoMapperProfile()
     {
         CreateMap<Appointment, AppointmentResponse>();
         CreateMap<AppointmentRequest, Appointment>();

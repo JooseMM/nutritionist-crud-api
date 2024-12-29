@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace AppointmentsAPI.Models;
+namespace AppointmentsAPI.Models.ResquestDtos;
 
 public class AppointmentRequest
 {

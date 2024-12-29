@@ -1,7 +1,7 @@
-using System.IO.Compression;
 using AppointmentsAPI.Context;
 using AppointmentsAPI.Interfaces;
-using AppointmentsAPI.Models;
+using AppointmentsAPI.Middleware;
+using AppointmentsAPI.Models.Validation;
 using AppointmentsAPI.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -11,8 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+
+//Adding Fluent Validation to DI Container
+builder.Services.AddFluentValidationAutoValidation(); 
 builder.Services.AddValidatorsFromAssemblyContaining<AppointmentRequestValidation>();
-builder.Services.AddFluentValidationAutoValidation(); // the same old MVC pipeline behavior
+
+// Adding AutoMapper to DI Container
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // add the context using SQL Server and setting the connection string
@@ -24,10 +28,15 @@ builder.Services.AddTransient<IAppointmentService, AppointmentServices>();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(opts => 
+	    {
+		opts.SwaggerEndpoint("/openapi/v1.json", "Swagger Demo");
+	    });
 }
 
 app.UseHttpsRedirection();
