@@ -1,3 +1,4 @@
+using System.Net;
 using AppointmentsAPI.Context;
 using AppointmentsAPI.Core;
 using AppointmentsAPI.Interfaces;
@@ -22,18 +23,18 @@ public class AppointmentServices : IAppointmentService
 
     public async Task<ResponseResult<List<AppointmentResponse>>> GetAllAsync()
     {
-            var appointmentList = await _context.Appointments!.ToListAsync();
+            var rawResult = await _context.Appointments!.ToListAsync();
+	    var data = rawResult
+			    .Select(element => _mapper.Map<AppointmentResponse>(element))
+			    .ToList();
 
-	    if(appointmentList.Count > 0)
+	    if(rawResult.Count > 0)
 	    {
-		return ResponseResult<List<AppointmentResponse>>.Success(
-			    appointmentList
-				.Select(element => _mapper.Map<AppointmentResponse>(element))
-				.ToList()
-			);
+		return ResponseResult<List<AppointmentResponse>>
+			.Success(data, (int)HttpStatusCode.OK);
 	    }
 	    return ResponseResult<List<AppointmentResponse>>
-		    .Success(new List<AppointmentResponse>());
+		    .Success(new List<AppointmentResponse>(), (int)HttpStatusCode.OK);
     }
 
     public async Task<ResponseResult<Guid>> CreateOneAsync(AppointmentRequest newAppointment)
@@ -46,8 +47,8 @@ public class AppointmentServices : IAppointmentService
 	var result = await _context.SaveChangesAsync() > 0; 
 	// handle the result
 	return result
-	    ? ResponseResult<Guid>.Success(appointment.TrackingId)
-	    : ResponseResult<Guid>.Failure("No se pudo insertar la cita");
+	    ? ResponseResult<Guid>.Success(appointment.TrackingId, (int)HttpStatusCode.Created)
+	    : ResponseResult<Guid>.Failure("No se pudo insertar la cita", (int) HttpStatusCode.GatewayTimeout);
     }
 
     public async Task<ResponseResult<bool>> DeleteOneAsync(Guid id)
@@ -57,7 +58,7 @@ public class AppointmentServices : IAppointmentService
 	// Check validation
 	if (targetToRemove is null)
 	{
-	    return ResponseResult<bool>.Failure("No se encontro la cita");
+	    return ResponseResult<bool>.Failure("No se encontro la cita", (int)HttpStatusCode.NotFound);
 	}
 	// Mark for future remove
 	_context.Appointments.Remove(targetToRemove);
@@ -65,8 +66,8 @@ public class AppointmentServices : IAppointmentService
 	var result = await _context.SaveChangesAsync() > 0;
 	// Handle result
 	return result 
-	    ? ResponseResult<bool>.Success(true)
-	    : ResponseResult<bool>.Failure("No se pudo eliminar la cita");
+	    ? ResponseResult<bool>.Success(true, (int)HttpStatusCode.NoContent)
+	    : ResponseResult<bool>.Failure("No se pudo eliminar la cita", (int)HttpStatusCode.GatewayTimeout);
     }
 
     public async Task<Appointment> GetOneAsync(Guid id)
