@@ -93,5 +93,10 @@ public class AppointmentsDbContext(DbContextOptions<AppointmentsDbContext> optio
                         .Property(prop => prop.AppointmentDateTime)
 			.HasColumnName("appointment_date")
                         .HasColumnType("DATETIME");
+		
+		modelBuilder.Entity<Appointment>()
+			.Property(prop => prop.PublicId)
+			.HasColumnName("public_id")
+			.HasColumnType("UNIQUEIDENTIFIER");
         }
 }

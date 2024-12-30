@@ -83,8 +83,9 @@ namespace AppointmentsAPI.Migrations
                         .HasColumnType("VARCHAR")
                         .HasColumnName("previous_diagnostic");
 
-                    b.Property<Guid>("TrackingId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("PublicId")
+                        .HasColumnType("UNIQUEIDENTIFIER")
+                        .HasColumnName("public_id");
 
                     b.Property<DateTime>("UpdateDateTime")
                         .HasColumnType("datetime2");

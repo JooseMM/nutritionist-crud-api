@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppointmentsAPI.Migrations
 {
     [DbContext(typeof(AppointmentsDbContext))]
-    [Migration("20241228191531_UpdateAppointmentModelAgain")]
-    partial class UpdateAppointmentModelAgain
+    [Migration("20241230002934_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,8 +86,9 @@ namespace AppointmentsAPI.Migrations
                         .HasColumnType("VARCHAR")
                         .HasColumnName("previous_diagnostic");
 
-                    b.Property<Guid>("TrackingId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("PublicId")
+                        .HasColumnType("UNIQUEIDENTIFIER")
+                        .HasColumnName("public_id");
 
                     b.Property<DateTime>("UpdateDateTime")
                         .HasColumnType("datetime2");
