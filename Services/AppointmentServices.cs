@@ -10,12 +10,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentsAPI.Services;
 
-public class AppointmentServices : IAppointmentService
+public class AppointmentService : IAppointmentService
 {
-    private readonly AppointmentsDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public AppointmentServices(AppointmentsDbContext context, IMapper mapper)
+    public AppointmentService(ApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

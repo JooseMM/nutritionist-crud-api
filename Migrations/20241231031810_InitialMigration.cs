@@ -34,6 +34,22 @@ namespace AppointmentsAPI.Migrations
                 {
                     table.PrimaryKey("PK_appointment", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Career = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -41,6 +57,9 @@ namespace AppointmentsAPI.Migrations
         {
             migrationBuilder.DropTable(
                 name: "appointment");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
