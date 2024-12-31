@@ -1,9 +1,10 @@
-using AppointmentsAPI.Models;
+using AppointmentsAPI.Models.ResquestDtos;
+using Microsoft.AspNetCore.Identity;
 
 namespace AppointmentsAPI.Interfaces;
 
 public interface ITokenService
 {
-    Task<string> CreateToken(AppUser user);
+    string CreateToken(IdentityUser user);
 }
 

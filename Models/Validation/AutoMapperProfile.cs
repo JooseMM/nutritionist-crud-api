@@ -10,7 +10,5 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<Appointment, AppointmentResponse>();
         CreateMap<AppointmentRequest, Appointment>();
-        CreateMap<RegisterAppUser, AppUser>();
-        CreateMap<AppUser, UserResponse>();
     }
 }

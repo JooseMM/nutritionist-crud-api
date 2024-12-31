@@ -1,10 +1,10 @@
 using AppointmentsAPI.Context;
 using AppointmentsAPI.Core;
 using AppointmentsAPI.Interfaces;
-using AppointmentsAPI.Models;
 using AppointmentsAPI.Models.ResponseDtos;
 using AppointmentsAPI.Models.ResquestDtos;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System.Net;
 
 namespace AppointmentsAPI.Services;
@@ -13,30 +13,42 @@ public class AuthenticationServices : IAuthenticationService
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly ITokenService _tokenService;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public AuthenticationServices(ApplicationDbContext context, IMapper mapper)
+    public AuthenticationServices(
+	    ApplicationDbContext context,
+	    IMapper mapper,
+	    ITokenService tokenService,
+	    UserManager<IdentityUser> userManager
+	    )
     {
         _context = context;
         _mapper = mapper;
+	_tokenService = tokenService;
+	_userManager = userManager;
     }
 
     public async Task<ResponseResult<UserResponse>> Register(RegisterAppUser registerRequest)
     {
-	registerRequest.Password = BCrypt.Net.BCrypt.HashPassword(registerRequest.Password);
+	// To do: later
+	throw new Exception();
+    }
 
-	var appUser = _mapper.Map<AppUser>(registerRequest);
-	_context.Users!.Add(appUser);
-
-	if(await _context.SaveChangesAsync() > 0)
+    public async Task<ResponseResult<string>> Login(LoginRequest userData)
+    {
+	var user = await _userManager.FindByEmailAsync(userData.Email!);
+	if(user == null || !await _userManager.CheckPasswordAsync(user, userData.Password!))
 	{
-	    var response = _mapper.Map<UserResponse>(appUser);
-	    return ResponseResult<UserResponse>
-			.Success(response, (int)HttpStatusCode.OK);
+	    return ResponseResult<string>.Failure("Usuario no encontrado", (int)HttpStatusCode.Unauthorized);
 	}
-	return ResponseResult<UserResponse>
-		.Failure(
-		    "No se pudo modificar la base de datos",
-		    (int)HttpStatusCode.InternalServerError
-		);
+
+	var token = _tokenService.CreateToken(user!);
+
+	if(String.IsNullOrEmpty(token))
+	{
+	    return ResponseResult<string>.Failure("creacion de jwt fallida", (int)HttpStatusCode.InternalServerError);
+	}
+	return ResponseResult<string>.Success(token, (int)HttpStatusCode.OK);
     }
 }

@@ -1,24 +1,21 @@
 using AppointmentsAPI.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentsAPI.Context;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
     public DbSet<Appointment>? Appointments { get; set; }
-    public DbSet<AppUser>? Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
             // keep the standard configuration in DbContext
             base.OnModelCreating(modelBuilder);
-
-
-	    UserDescriptorTable(modelBuilder);
 	    AppointmentDescriptionTable(modelBuilder);
 
     }
@@ -98,45 +95,5 @@ public class ApplicationDbContext : DbContext
 	    .HasColumnName("public_id")
 	    .HasColumnType("UNIQUEIDENTIFIER");
 
-    }
-
-    private static void UserDescriptorTable(ModelBuilder modelBuilder)
-    {
-	modelBuilder.Entity<AppUser>().ToTable("user");
-
-	modelBuilder.Entity<AppUser>()
-	    .Property(prop => prop.Phone)
-	    .HasColumnName("phone")
-	    .HasColumnType("VARCHAR")
-	    .HasMaxLength(10) // a Chilean Phone has 10 characters length without spaces or separators
-	    .IsRequired();
-
-	modelBuilder.Entity<AppUser>()
-	    .Property(prop => prop.Email)
-	    .HasColumnName("email")
-	    .HasColumnType("VARCHAR")
-	    .HasMaxLength(255)
-	    .IsRequired();
-
-	modelBuilder.Entity<AppUser>()
-	    .Property(prop => prop.Username)
-	    .HasColumnName("username")
-	    .HasColumnType("VARCHAR")
-	    .HasMaxLength(100)
-	    .IsRequired();
-
-	modelBuilder.Entity<AppUser>()
-	    .Property(prop => prop.Name)
-	    .HasColumnName("name")
-	    .HasColumnType("VARCHAR")
-	    .HasMaxLength(100)
-	    .IsRequired();
-
-	modelBuilder.Entity<AppUser>()
-	    .Property(prop => prop.Career)
-	    .HasColumnName("career")
-	    .HasColumnType("VARCHAR")
-	    .HasMaxLength(50)
-	    .IsRequired();
     }
 }

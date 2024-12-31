@@ -16,6 +16,7 @@ G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\FluentValidation.AspNetCore.dl
 G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\FluentValidation.DependencyInjectionExtensions.dll
 G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\Humanizer.dll
 G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
 G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 G:\code\projects\AppointmentsAPI\bin\Debug\net9.0\Microsoft.Build.Locator.dll

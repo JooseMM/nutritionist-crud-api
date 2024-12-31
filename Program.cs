@@ -1,4 +1,3 @@
-using Microsoft.IdentityModel.Tokens;
 using AppointmentsAPI.Context;
 using AppointmentsAPI.Interfaces;
 using AppointmentsAPI.Middleware;
@@ -6,10 +5,12 @@ using AppointmentsAPI.Models.Validation;
 using AppointmentsAPI.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using AppointmentsAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using AppointmentsAPI.Utils;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,10 +34,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 		).EnableSensitiveDataLogging()
 	);
 
-/*
+// Add the ASP.NET Identity services
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+	.AddEntityFrameworkStores<ApplicationDbContext>()
+	.AddDefaultTokenProviders();
+
+// add the options to handle Authentication with JWT
 builder.Services.AddAuthentication(options => 
 	{
-	    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+	    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
 	}).AddJwtBearer(options => {
 	    options.TokenValidationParameters = new TokenValidationParameters
 		{
@@ -50,13 +58,32 @@ builder.Services.AddAuthentication(options =>
 			    )
 		};
 	    });
-	    */
+
+// registering the configuration class
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JWT"));
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtConfig>>().Value);
+// add authorization policies
+builder.Services.AddAuthorization(options => 
+	{
+	    options.AddPolicy(PolicyMaster.ADMIN_ONLY, policy =>
+		    policy.RequireClaim(ClaimType.ROLE, CustomClaims.ADMIN));
+	});
 // register the service in the DI Container
 // as a Transient lifecycle (each time is instatiated)
 builder.Services.AddTransient<IAppointmentService, AppointmentService>(); 
 builder.Services.AddTransient<IAuthenticationService, AuthenticationServices>(); 
+builder.Services.AddTransient<ITokenService, TokenServices>(); 
+
+builder.Services.AddTransient<DataSeeder>();
 
 var app = builder.Build();
+
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var seeder = services.GetRequiredService<DataSeeder>();
+    await seeder.SeedDataAsync();
+}
 
 app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.

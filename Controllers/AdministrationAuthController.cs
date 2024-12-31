@@ -2,19 +2,22 @@ using System.Net;
 using AppointmentsAPI.Core;
 using AppointmentsAPI.Interfaces;
 using AppointmentsAPI.Models.ResquestDtos;
+using AppointmentsAPI.Utils;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentsAPI.Controllers;
 
+[Authorize(Policy = PolicyMaster.ADMIN_ONLY)]
 [ApiController]
 [Route("api/auth")]
-public class AuthenticationController : ControllerBase
+public class AdminsitrationAuthController : ControllerBase
 {
     private readonly IValidator<RegisterAppUser> _validator;
     private readonly IAuthenticationService _authService;
 
-    public AuthenticationController(
+    public AdminsitrationAuthController(
 	    IValidator<RegisterAppUser> validator,
 	    IAuthenticationService authenticationService
 	    )

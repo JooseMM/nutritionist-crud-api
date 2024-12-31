@@ -7,4 +7,5 @@ namespace AppointmentsAPI.Interfaces;
 public interface IAuthenticationService
 {
     Task<ResponseResult<UserResponse>> Register(RegisterAppUser request);
+    Task<ResponseResult<string>> Login(LoginRequest userData);
 }
