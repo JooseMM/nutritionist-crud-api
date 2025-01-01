@@ -126,6 +126,7 @@ public class AppointmentService : IAppointmentService
 	    oldData.ClientRUT = newData.ClientRUT!;
 	    oldData.ClientPhone = newData.ClientPhone!;
 	    oldData.IsCompleted = newData.IsCompleted!;
+	    oldData.Goals = newData.Goals!;
 	    oldData.PrevDiagnostic = newData.PrevDiagnostic!;
 	    oldData.AppointmentDateTime = newData.AppointmentDateTime!;
 	    oldData.UpdateDateTime = DateTime.UtcNow;
