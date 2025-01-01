@@ -10,9 +10,9 @@ namespace AppointmentsAPI.Services;
 
 public class TokenServices : ITokenService
 {
-    private readonly JwtConfig _config;
+    private readonly IConfiguration _config;
 
-    public TokenServices(JwtConfig config)
+    public TokenServices(IConfiguration config)
     {
         _config = config;
     }
@@ -26,12 +26,12 @@ public class TokenServices : ITokenService
 	    new Claim(ClaimType.ROLE, CustomClaims.ADMIN)
 	};
 	var secretKey = new SymmetricSecurityKey(
-		Encoding.UTF8.GetBytes(_config.SigningKey!)
+		Encoding.UTF8.GetBytes(_config.GetValue<string>("SECRET_KEY")!)
 		);
 	var creds = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 	var token = new JwtSecurityToken(
-		issuer: "AppointmentsAPI",
-		audience: "",
+		issuer: _config.GetValue<string>("ISSUER"),
+		audience: _config.GetValue<string>("AUDIENCE"),
 		claims: claims,
 		expires: DateTime.UtcNow.AddDays(1),
 		signingCredentials: creds
@@ -40,8 +40,3 @@ public class TokenServices : ITokenService
 	return tokeHandler.WriteToken(token);
     }
 }
-/*
-IssuerSigningKey = new SymmetricSecurityKey(
-System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]!)
-			    )
-			    */

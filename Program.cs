@@ -26,7 +26,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // add the context using SQL Server and setting the connection string
 builder.Services.AddDbContext<ApplicationDbContext>(
-	opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+	opt => opt.UseSqlServer(builder.Configuration.GetValue<string>("DB_CONNECTION"))
 		.LogTo(
 		    Console.WriteLine,
 		    new[] { DbLoggerCategory.Database.Command.Name },
@@ -49,19 +49,16 @@ builder.Services.AddAuthentication(options =>
 	    options.TokenValidationParameters = new TokenValidationParameters
 		{
 		    ValidateIssuer = true,
-		    ValidIssuer = builder.Configuration["JWT:Issuer"],
+		    ValidIssuer = builder.Configuration.GetValue<string>("ISSUER"),
 		    ValidateAudience = true,
-		    ValidAudience = builder.Configuration["JWT:Audience"],
+		    ValidAudience = builder.Configuration.GetValue<string>("AUDIENCE"),
 		    ValidateIssuerSigningKey = true,
 		    IssuerSigningKey = new SymmetricSecurityKey(
-			    System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]!)
+			    System.Text.Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("SECRET_KEY")!)
 			    )
 		};
 	    });
 
-// registering the configuration class
-builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JWT"));
-builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtConfig>>().Value);
 // add authorization policies
 builder.Services.AddAuthorization(options => 
 	{

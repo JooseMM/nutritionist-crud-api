@@ -40,6 +40,7 @@ public class AuthenticationServices : IAuthenticationService
 	var user = await _userManager.FindByEmailAsync(userData.Email!);
 	if(user == null || !await _userManager.CheckPasswordAsync(user, userData.Password!))
 	{
+	    Console.Write("user is: " + user!.Email);
 	    return ResponseResult<string>.Failure("Usuario no encontrado", (int)HttpStatusCode.Unauthorized);
 	}
 

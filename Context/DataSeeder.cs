@@ -7,15 +7,24 @@ public class DataSeeder
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IConfiguration _config;
 
-    public DataSeeder(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public DataSeeder(
+	    UserManager<IdentityUser> userManager,
+	    RoleManager<IdentityRole> roleManager,
+	    IConfiguration config)
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _config = config;
     }
 
     public async Task SeedDataAsync()
     {
+	var adminEmail = _config.GetValue<string>("LOGIN_EMAIL");
+	var adminUsername = _config.GetValue<string>("LOGIN_USERNAME");
+	var adminPassword = _config.GetValue<string>("LOGIN_PASSWORD");
+
 	// Ensure the roles are created 
 	if (!await _roleManager.RoleExistsAsync("Admin"))
 	{
@@ -26,19 +35,18 @@ public class DataSeeder
 	    await _roleManager.CreateAsync(new IdentityRole("User")); 
 	} 
 	// Ensure the admin user is created 
-	var adminEmail = "admin@example.com";
 
-	if (await _userManager.FindByEmailAsync(adminEmail) == null)
+	if (await _userManager.FindByEmailAsync(adminEmail!) == null)
 	{
 	    var adminUser = new IdentityUser 
 	    { 
-		UserName = adminEmail,
 		Email = adminEmail,
+		UserName = adminUsername,
 		EmailConfirmed = true 
 	    };
 	    var result = await _userManager.CreateAsync(
 		    adminUser,
-		    "AdminPassword123!"
+		    adminPassword!
 		);
 	    if (result.Succeeded) 
 	    {
