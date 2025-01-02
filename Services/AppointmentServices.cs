@@ -14,11 +14,17 @@ public class AppointmentService : IAppointmentService
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IEmailService _emailService;
 
-    public AppointmentService(ApplicationDbContext context, IMapper mapper)
+    public AppointmentService(
+	    ApplicationDbContext context,
+	    IMapper mapper,
+	    IEmailService emailService
+	    )
     {
         _context = context;
         _mapper = mapper;
+	_emailService = emailService;
     }
 
     public async Task<ResponseResult<List<AppointmentResponse>>> GetAllAsync()
@@ -40,15 +46,23 @@ public class AppointmentService : IAppointmentService
     public async Task<ResponseResult<Guid>> CreateOneAsync(AppointmentRequest newAppointment)
     {
 	// Map the Dto to an Appointment class using AutoMapper
-	var appointment = _mapper.Map<Appointment>(newAppointment);
+	var appointment =  _mapper.Map<Appointment>(newAppointment);
 	// Add mark to add 
 	await _context.AddAsync(appointment);
-	// apply changes, this returns the number of sucessful changes in newData.ase
+	// apply changes, this returns the number of sucessful changes in database
 	var result = await _context.SaveChangesAsync() > 0; 
 	// handle the result
-	return result
-	    ? ResponseResult<Guid>.Success(appointment.PublicId, (int)HttpStatusCode.Created)
-	    : ResponseResult<Guid>.Failure("No se pudo insertar la cita", (int) HttpStatusCode.GatewayTimeout);
+	if(result)
+	{
+	    await _emailService.SendEmailVerificationCode(appointment); // send the confirmation email
+	    return ResponseResult<Guid>
+		    .Success(appointment.PublicId, (int)HttpStatusCode.Created);
+	}
+	return ResponseResult<Guid>
+		.Failure(
+			"No se pudo insertar la cita",
+			(int) HttpStatusCode.GatewayTimeout
+		    );
     }
 
     public async Task<ResponseResult<bool>> DeleteOneAsync(Guid id)

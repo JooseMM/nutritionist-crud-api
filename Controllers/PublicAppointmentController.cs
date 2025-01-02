@@ -9,12 +9,12 @@ namespace AppointmentsAPI.Controllers;
 
 [ApiController]
 [Route("api/public/appointment")]
-public class PublicRoutesController : ControllerBase
+public class PublicAppointmentController : ControllerBase
 {
     private readonly IValidator<AppointmentRequest> _appointmentValidator;
     private readonly IAppointmentService _appointmentService;
 
-    public PublicRoutesController(
+    public PublicAppointmentController(
         IValidator<AppointmentRequest> appointmentValidator,
         IAppointmentService appointmentService
 	)

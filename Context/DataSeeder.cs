@@ -21,9 +21,9 @@ public class DataSeeder
 
     public async Task SeedDataAsync()
     {
-	var adminEmail = _config.GetValue<string>("LOGIN_EMAIL");
-	var adminUsername = _config.GetValue<string>("LOGIN_USERNAME");
-	var adminPassword = _config.GetValue<string>("LOGIN_PASSWORD");
+	var adminEmail = _config.GetValue<string>("ADMIN_EMAIL");
+	var adminUsername = _config.GetValue<string>("ADMIN_USERNAME");
+	var adminPassword = _config.GetValue<string>("ADMIN_PASSWORD");
 
 	// Ensure the roles are created 
 	if (!await _roleManager.RoleExistsAsync("Admin"))

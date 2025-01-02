@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using AppointmentsAPI.Utils;
+using AppointmentsAPI.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddTransient<IAppointmentService, AppointmentService>(); 
 builder.Services.AddTransient<IAuthenticationService, AuthenticationServices>(); 
 builder.Services.AddTransient<ITokenService, TokenServices>(); 
+builder.Services.AddTransient<IEmailService, EmailService>(); 
 
 builder.Services.AddTransient<DataSeeder>();
 

@@ -8,5 +8,5 @@ public interface IAuthenticationService
 {
     Task<ResponseResult<UserResponse>> Register(RegisterAppUser request);
     Task<ResponseResult<string>> Login(LoginRequest userData);
-    Task<ResponseResult<string>> EmailVerication(Guid publicId, Guid verificationCode);
+    Task<ResponseResult<string>> EmailVerication(Guid emailCode);
 }

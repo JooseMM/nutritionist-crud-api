@@ -54,17 +54,17 @@ public class AuthenticationServices : IAuthenticationService
 	return ResponseResult<string>.Success(token, (int)HttpStatusCode.OK);
     }
 
-    public async Task<ResponseResult<string>> EmailVerication(Guid publicId, Guid verificationCode)
+    public async Task<ResponseResult<string>> EmailVerication(Guid emailCode)
     {
 
 	var user = await _context.Appointments!
 			    .FirstOrDefaultAsync(appointment => 
-				appointment.PublicId == publicId
+				appointment.EmailVerificationCode == emailCode
 				);
-	if(user is null || user.EmailVerificationCode != verificationCode)
+	if(user is null)
 	{
 	    return ResponseResult<string>
-		    .Failure("No se pudo verificar el codigo", (int)HttpStatusCode.NotFound);
+		    .Failure("Codigo erroneo", (int)HttpStatusCode.NotFound);
 	}
 	user.IsEmailVerified = true; 
 	_context.Entry(user).State = EntityState.Modified;

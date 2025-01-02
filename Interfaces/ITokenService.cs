@@ -1,4 +1,3 @@
-using AppointmentsAPI.Models.ResquestDtos;
 using Microsoft.AspNetCore.Identity;
 
 namespace AppointmentsAPI.Interfaces;
