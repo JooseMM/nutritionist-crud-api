@@ -95,5 +95,10 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser, IdentityRole
 	    .HasColumnName("public_id")
 	    .HasColumnType("UNIQUEIDENTIFIER");
 
+	modelBuilder.Entity<Appointment>()
+	    .Property(prop => prop.EmailVerificationCode)
+	    .HasColumnName("email_code")
+	    .HasColumnType("UNIQUEIDENTIFIER");
+
     }
 }

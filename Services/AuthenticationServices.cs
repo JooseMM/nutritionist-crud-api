@@ -5,6 +5,7 @@ using AppointmentsAPI.Models.ResponseDtos;
 using AppointmentsAPI.Models.ResquestDtos;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace AppointmentsAPI.Services;
@@ -51,5 +52,31 @@ public class AuthenticationServices : IAuthenticationService
 	    return ResponseResult<string>.Failure("creacion de jwt fallida", (int)HttpStatusCode.InternalServerError);
 	}
 	return ResponseResult<string>.Success(token, (int)HttpStatusCode.OK);
+    }
+
+    public async Task<ResponseResult<string>> EmailVerication(Guid publicId, Guid verificationCode)
+    {
+
+	var user = await _context.Appointments!
+			    .FirstOrDefaultAsync(appointment => 
+				appointment.PublicId == publicId
+				);
+	if(user is null || user.EmailVerificationCode != verificationCode)
+	{
+	    return ResponseResult<string>
+		    .Failure("No se pudo verificar el codigo", (int)HttpStatusCode.NotFound);
+	}
+	user.IsEmailVerified = true; 
+	_context.Entry(user).State = EntityState.Modified;
+	var result = await _context.SaveChangesAsync() > 0;
+	return result 
+		? ResponseResult<string>
+		    .Success("Usuario validado", (int)HttpStatusCode.OK)
+		: ResponseResult<string>
+		    .Failure(
+			"No se pudo validar el usuario",
+			(int)HttpStatusCode.InternalServerError
+		    );
+		
     }
 }

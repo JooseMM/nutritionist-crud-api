@@ -4,6 +4,7 @@ public class Appointment
 {
    public required Guid Id {get;set;} = Guid.NewGuid();
    public required Guid PublicId {get;set;} = Guid.NewGuid();
+   public required Guid EmailVerificationCode {get;set;} = Guid.NewGuid();
    public required string ClientName {get;set;}
    public required int ClientAge {get;set;}
    public required string ClientRUT {get;set;}
