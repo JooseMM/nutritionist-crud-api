@@ -23,7 +23,7 @@ public class EmailService : IEmailService
 	string template = EmailTemplate(appointmentData);
 
 	var target = appointmentData.ClientEmail;
-	var subject = "Confirmacion de Cita [Prueba]";
+	var subject = "Confirmacion de Cita";
 
 	var smtpClient = new SmtpClient(emailSenderHost, emailSenderPort);
 	smtpClient.EnableSsl = true;
