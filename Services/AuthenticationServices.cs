@@ -59,7 +59,7 @@ public class AuthenticationServices : IAuthenticationService
 
 	var user = await _context.Appointments!
 			    .FirstOrDefaultAsync(appointment => 
-				appointment.EmailVerificationCode == emailCode
+				appointment.EmailVerificationCode == emailCode && appointment.IsEmailVerified == false
 				);
 	if(user is null)
 	{

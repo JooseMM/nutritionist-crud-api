@@ -17,7 +17,8 @@ public class PublicAuthController : ControllerBase
 	_authService = authenticationService;
     }
 
-    [HttpPost("/email/{emailCode}")]
+    //testing
+    [HttpPost("email/{emailCode}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<ActionResult<ResponseResult<bool>>> VerifyEmail(Guid emailCode)
@@ -26,7 +27,7 @@ public class PublicAuthController : ControllerBase
 	return result.IsSuccess ? Ok(result) : NotFound(result);
     }
 
-    [HttpPost("/login")]
+    [HttpPost("login")]
     public async Task<ActionResult<ResponseResult<string>>> Login(LoginRequest request)
     {
 	var response = await _authService.Login(request);
