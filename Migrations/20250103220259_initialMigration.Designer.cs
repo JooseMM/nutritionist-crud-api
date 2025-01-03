@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppointmentsAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250102024453_addingEmailCodeColumn")]
-    partial class addingEmailCodeColumn
+    [Migration("20250103220259_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

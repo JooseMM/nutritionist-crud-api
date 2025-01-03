@@ -17,6 +17,7 @@ namespace AppointmentsAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     public_id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    email_code = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     client_name = table.Column<string>(type: "VARCHAR(100)", maxLength: 100, nullable: false),
                     client_age = table.Column<byte>(type: "TINYINT", nullable: false),
                     client_rut = table.Column<string>(type: "VARCHAR(10)", maxLength: 10, nullable: false),
