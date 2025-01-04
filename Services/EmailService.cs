@@ -73,7 +73,7 @@ public class EmailService : IEmailService
 		</tr>
 		<tr>
 		    <td style=""padding-top:2rem;"">
-			<p style=""margin:0;padding:0;""><b>Contacto:</b> (+56) 9 3454 4321</p>
+			<p style=""margin:0;padding:0;""><b>Contacto:</b> (+56) 9 8932 3392</p>
 			<p style=""margin:0;padding:0;margin-top:5px;""><b>Email:</b> pia.nutricionista@gmail.com</p>
 		    </td>
 		</tr>
