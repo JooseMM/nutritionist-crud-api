@@ -23,6 +23,12 @@ public class PublicAppointmentController : ControllerBase
         _appointmentService = appointmentService;
     }
 
+    [HttpGet("/test")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public string Test(Guid publicId)
+    {
+	return "this is a test";
+    }
 
     [HttpGet("{publicId}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
