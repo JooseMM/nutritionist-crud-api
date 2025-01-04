@@ -18,12 +18,12 @@ public class PublicAuthController : ControllerBase
     }
 
     //testing
-    [HttpPost("email/{emailCode}")]
+    [HttpPost("email")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult<ResponseResult<bool>>> VerifyEmail(Guid emailCode)
+    public async Task<ActionResult<ResponseResult<bool>>> VerifyEmail([FromBody] EmailVerificationRequest request)
     {
-	var result = await _authService.EmailVerication(emailCode);
+	var result = await _authService.EmailVerication(request);
 	return result.IsSuccess ? Ok(result) : NotFound(result);
     }
 

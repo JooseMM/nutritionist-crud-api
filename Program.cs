@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using AppointmentsAPI.Utils;
-using AppointmentsAPI.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

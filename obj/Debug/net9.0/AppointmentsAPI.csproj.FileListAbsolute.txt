@@ -147,6 +147,7 @@ G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\AppointmentsAPI.AssemblyInfo.c
 G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\AppointmentsAPI.csproj.CoreCompileInputs.cache
 G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\AppointmentsAPI.MvcApplicationPartsAssemblyInfo.cs
 G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\AppointmentsAPI.MvcApplicationPartsAssemblyInfo.cache
+G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\AppointmentsAPI.sourcelink.json
 G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\scopedcss\bundle\AppointmentsAPI.styles.css
 G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\staticwebassets.build.json
 G:\code\projects\AppointmentsAPI\obj\Debug\net9.0\staticwebassets.development.json

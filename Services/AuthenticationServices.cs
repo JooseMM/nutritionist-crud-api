@@ -30,12 +30,6 @@ public class AuthenticationServices : IAuthenticationService
 	_userManager = userManager;
     }
 
-    public async Task<ResponseResult<UserResponse>> Register(RegisterAppUser registerRequest)
-    {
-	// To do: later
-	throw new Exception();
-    }
-
     public async Task<ResponseResult<string>> Login(LoginRequest userData)
     {
 	var user = await _userManager.FindByEmailAsync(userData.Email!);
@@ -54,12 +48,12 @@ public class AuthenticationServices : IAuthenticationService
 	return ResponseResult<string>.Success(token, (int)HttpStatusCode.OK);
     }
 
-    public async Task<ResponseResult<string>> EmailVerication(Guid emailCode)
+    public async Task<ResponseResult<string>> EmailVerication(EmailVerificationRequest request)
     {
 
 	var user = await _context.Appointments!
 			    .FirstOrDefaultAsync(appointment => 
-				appointment.EmailVerificationCode == emailCode && appointment.IsEmailVerified == false
+				appointment.EmailVerificationCode == request.EmailVerification && appointment.IsEmailVerified == false
 				);
 	if(user is null)
 	{
