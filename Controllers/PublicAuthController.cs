@@ -28,7 +28,7 @@ public class PublicAuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<ResponseResult<string>>> Login(LoginRequest request)
+    public async Task<ActionResult<ResponseResult<string>>> Login([FromBody] LoginRequest request)
     {
 	var response = await _authService.Login(request);
 
